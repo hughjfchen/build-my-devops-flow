@@ -1,0 +1,13 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:gh-webhook"
+
+    - path: "./app"
+      component: "gh-webhook:exe:java-analyzer-runner"
+
+    - path: "./tests"
+      component: "gh-webhook:test:java-analyzer-runner-tests"
+
+    - path: "./benchmark"
+      component: "gh-webhook:exe:java-analyzer-runner-benchmark"
