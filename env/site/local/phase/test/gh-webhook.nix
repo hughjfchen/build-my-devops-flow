@@ -4,7 +4,7 @@ in {
   imports = [ ];
 
   options = {
-    runner = lib.mkOption {
+    gh-webhook = lib.mkOption {
       type = lib.types.submodule envSubM;
       description = ''
         The deploy target host env.
@@ -13,11 +13,11 @@ in {
   };
 
   config = {
-    runner = rec {
+    gh-webhook = rec {
       hostName = "localhost";
       dnsName = "localhost";
       ipAddress = "127.0.0.1";
-      processUser = "jarunneruser";
+      processUser = "doghwebhookuser";
       isSystemdService = false;
       runDir = "/var/${processUser}/run";
       dataDir = "/var/${processUser}/data";

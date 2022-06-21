@@ -7,5 +7,6 @@ defaultPlatformProject.pkgs.lib.mapAttrs (_: pkgs: rec {
 
   inherit pkgs;
 
-}) toBuild
+  my-exe-engine = pkgs.haskellPackages.amqp-utils;
 
+}) toBuild

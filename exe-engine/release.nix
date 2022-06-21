@@ -16,7 +16,7 @@ let
   ];
 
   # define some utility function for release packing ( code adapted from setup-systemd-units.nix )
-  release-utils = import ./release-utils.nix {
+  deploy-packer = import ./deploy-packer.nix {
     inherit lib;
     pkgs = nPkgs;
   };
@@ -43,9 +43,9 @@ let
   # my services dependencies
   my-exe-engine-bin-sh = nPkgs.writeShellApplication {
     name = lib.concatStringsSep "-" [ pkgName "bin" "sh" ];
-    runtimeInputs = [ nPkgs.haskellPackages.exe-engine ];
+    runtimeInputs = [ nativePkgs.my-exe-engine ];
     text = ''
-      exe-engine ${my-postgrest-config-kv} "$@"
+      konsum {my-exe-engine-config-kv} "$@"
     '';
   };
 
@@ -68,9 +68,9 @@ let
           description = "my exe-engine service";
           serviceConfig = {
             Type = "simple";
-            User = "${my-exe-engine-env.db-gw.processUser}";
+            User = "${my-exe-engine-env.exe-engine.processUser}";
             ExecStart =
-              "${my-exe-engine-bin-sh}/bin/${my-postgrest-bin-sh.name}";
+              "${my-exe-engine-bin-sh}/bin/${my-exe-engine-bin-sh.name}";
             Restart = "on-failure";
           };
         });
@@ -104,7 +104,7 @@ in rec {
 
   mk-my-exe-engine-service-systemd-unsetup-or-bin-sh =
     if my-exe-engine-env.db-gw.isSystemdService then
-      (release-utils.unsetup-systemd-service {
+      (deploy-packer.unsetup-systemd-service {
         namespace = pkgName;
         units = serviceNameUnit;
       })
@@ -122,19 +122,19 @@ in rec {
 
   mk-my-exe-engine-reference =
     nPkgs.writeReferencesToFile setup-and-unsetup-or-bin-sh;
-  mk-my-exe-engine-deploy-sh = release-utils.mk-deploy-sh {
+  mk-my-exe-engine-deploy-sh = deploy-packer.mk-deploy-sh {
     env = my-exe-engine-env.db-gw;
     payloadPath = setup-and-unsetup-or-bin-sh;
     inherit innerTarballName;
     execName = "exe-engine";
   };
-  mk-my-exe-engine-cleanup-sh = release-utils.mk-cleanup-sh {
+  mk-my-exe-engine-cleanup-sh = deploy-packer.mk-cleanup-sh {
     env = my-exe-engine-env.db-gw;
     payloadPath = setup-and-unsetup-or-bin-sh;
     inherit innerTarballName;
     execName = "exe-engine";
   };
-  mk-my-release-packer = release-utils.mk-release-packer {
+  mk-my-release-packer = deploy-packer.mk-release-packer {
     referencePath = mk-my-exe-engine-reference;
     component = pkgName;
     inherit site phase innerTarballName;

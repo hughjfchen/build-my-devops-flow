@@ -29,10 +29,10 @@ in let
 
   enableModule = {
     config.db.enable = true;
-    config.db-gw.enable = true;
+    config.exe-engine.enable = true;
     config.api-gw.enable = true;
     config.messaging.enable = true;
-    config.runner.enable = true;
+    config.gh-webhook.enable = true;
   };
 
 in configBuilder // {

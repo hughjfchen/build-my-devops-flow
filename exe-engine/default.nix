@@ -24,4 +24,5 @@ in rec {
   # nativePkgs.lib.recurseIntoAttrs, just a bit more explicilty.
   recurseForDerivations = true;
 
+  my-exe-engine = pkgs.haskellPackages.amqp-utils;
 }

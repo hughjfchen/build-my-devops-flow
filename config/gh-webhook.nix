@@ -1,15 +1,15 @@
 { config, lib, pkgs, env, ... }:
 
 {
-  imports = [ ./db.nix ];
+  imports = [ ];
 
   options = {
-    runner = {
+    gh-webhook = {
       enable = lib.mkOption {
         type = lib.types.bool;
         default = false;
         description = ''
-          To enable the config for runner.
+          To enable the config for gh-webhook.
         '';
       };
       "command" = lib.mkOption {
@@ -17,7 +17,7 @@
         default = "Start";
         example = "Stop";
         description = ''
-          The command for the runner.
+          The command for the gh-webhook.
         '';
       };
       "database.host" = lib.mkOption {
@@ -131,8 +131,8 @@
       };
       "oddjobsstartargs.pidfile" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.runDir}/my-job-runner.pid";
-        example = "${env.runner.runDir}/my-job-runner.pid";
+        default = "${env.gh-webhook.runDir}/my-job-gh-webhook.pid";
+        example = "${env.gh-webhook.runDir}/my-job-gh-webhook.pid";
         description = ''
           The PID file path for the odd-jobs daemon.
           Will need this to stop it gracefully.
@@ -149,8 +149,8 @@
       };
       "oddjobsstopargs.pidfile" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.runDir}/my-job-runner.pid";
-        example = "${env.runner.runDir}/my-job-runner.pid";
+        default = "${env.gh-webhook.runDir}/my-job-gh-webhook.pid";
+        example = "${env.gh-webhook.runDir}/my-job-gh-webhook.pid";
         description = ''
           The PID file path for the odd-jobs daemon.
           Will need this to stop it gracefully.
@@ -165,12 +165,12 @@
           This should be prefixed by the dataSchema.
         '';
       };
-      "oddjobsconfig.jobrunner" = lib.mkOption {
+      "oddjobsconfig.jobgh-webhook" = lib.mkOption {
         type = lib.types.str;
         default = "";
         example = "";
         description = ''
-          The job runner implementation.
+          The job gh-webhook implementation.
           Actually, I donnot konw how to config this
           because haskell function cannot be sereriable.
         '';
@@ -248,10 +248,10 @@
       };
       "oddjobsconfig.pidfile" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.runDir}/my-job-runner.pid";
-        example = "${env.runner.runDir}/my-job-runner.pid";
+        default = "${env.gh-webhook.runDir}/my-job-gh-webhook.pid";
+        example = "${env.gh-webhook.runDir}/my-job-gh-webhook.pid";
         description = ''
-          The PID file for the job runner.
+          The PID file for the job gh-webhook.
         '';
       };
       "oddjobsconfig.logger" = lib.mkOption {
@@ -359,70 +359,70 @@
       };
       "outputpath.fetcheddumphome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/raw_dump_files";
+        default = "${env.gh-webhook.dataDir}/raw_dump_files";
         description = ''
           The path to store the fetched dump file.
         '';
       };
       "outputpath.jcapreprocessorhome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/preprocessed_report_jca";
+        default = "${env.gh-webhook.dataDir}/preprocessed_report_jca";
         description = ''
           The path to store the proprocessed result of jca.
         '';
       };
       "outputpath.matpreprocessorhome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/preprocessed_report_mat";
+        default = "${env.gh-webhook.dataDir}/preprocessed_report_mat";
         description = ''
           The path the store the preprocessed result of mat.
         '';
       };
       "outputpath.gcmvpreprocessorhome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/preprocessed_report_gcmv";
+        default = "${env.gh-webhook.dataDir}/preprocessed_report_gcmv";
         description = ''
           The path to store the preprocessed result of gcmv.
         '';
       };
       "outputpath.jcareporthome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/parsed_report_jca";
+        default = "${env.gh-webhook.dataDir}/parsed_report_jca";
         description = ''
           The path to store the parsed result of jca.
         '';
       };
       "outputpath.matreporthome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/parsed_report_mat";
+        default = "${env.gh-webhook.dataDir}/parsed_report_mat";
         description = ''
           The path to store the parsed result of mat.
         '';
       };
       "outputpath.gcmvreporthome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/parsed_report_gcmv";
+        default = "${env.gh-webhook.dataDir}/parsed_report_gcmv";
         description = ''
           The path to store the parsed result of gcmv.
         '';
       };
       "outputpath.jcapostprocessorhome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/postprocessed_report_jca";
+        default = "${env.gh-webhook.dataDir}/postprocessed_report_jca";
         description = ''
           The path to store the postprocessed result of jca.
         '';
       };
       "outputpath.matpostprocessorhome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/postprocessed_report_mat";
+        default = "${env.gh-webhook.dataDir}/postprocessed_report_mat";
         description = ''
           The path to store the parsed result of mat.
         '';
       };
       "outputpath.gcmvpostprocessorhome" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/postprocessed_report_gcmv";
+        default = "${env.gh-webhook.dataDir}/postprocessed_report_gcmv";
         description = ''
           The path to store the parsed result of gcmv.
         '';
@@ -460,7 +460,7 @@
       };
       "gcmvcmdlineoptions.preference" = lib.mkOption {
         type = lib.types.str;
-        default = "${env.runner.dataDir}/default_preference.emf";
+        default = "${env.gh-webhook.dataDir}/default_preference.emf";
         description = ''
           The default preference of gcmv.
         '';

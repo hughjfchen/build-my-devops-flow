@@ -1,10 +1,10 @@
 { config, lib, pkgs, env, ... }:
 
 {
-  imports = [ ./db.nix ];
+  imports = [ ./messaging.nix ];
 
-  config = lib.mkIf config.db-gw.enable {
-    db-gw = {
+  config = lib.mkIf config.exe-engine.enable {
+    exe-engine = {
       db-uri = ''
         "postgres://${config.db.apiSchemaUser}:${config.db.apiSchemaPassword}@${config.db.host}:${
           toString config.db.port
@@ -12,7 +12,7 @@
       db-schema = ''"${config.db.apiSchema}"'';
       db-anon-role = ''"${config.db.anonRole}"'';
       jwt-secret = ''"${config.db.jwtSecret}"'';
-      server-host = ''"${env.db-gw.ipAddress}"'';
+      server-host = ''"${env.exe-engine.ipAddress}"'';
       server-port = 3000;
     };
   };
